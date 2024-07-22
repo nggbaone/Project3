@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
+<c:url var="buildingListURL" value="/admin/building-list"></c:url>
 <html>
 <head>
     <title>Danh sách toà nhà</title>
@@ -45,90 +46,92 @@
                                 </div>
 
                                 <div class="widget-body" style="font-family: 'Times New Roman', Times, serif">
-                                    <div class="widget-main" id="listForm">
-                                        <div class="row">
-<%--                                            <div class="form-group">--%>
+                                    <div class="widget-main">
+                                        <form:form id="listForm" modelAttribute="modelSearch" action="${buildingListURL}" method="GET">
+                                            <div class="row">
+                                                    <%--                                            <div class="form-group">--%>
                                                 <div class="col-xs-12">
                                                     <div class="col-xs-6">
                                                         <label class="name">Tên toà nhà</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" id="name" name="name" value="${modelSearch.name}">
                                                     </div>
                                                     <div class="col-xs-6">
                                                         <label class="name">Diện tích sàn</label>
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control" id="floorArea" name="floorArea" value="${modelSearch.floorArea}">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-xs-12">
                                                     <div class="col-xs-2">
                                                         <label class="name">Quận</label>
-                                                        <select class="form-control">
-                                                            <option value="">--Chọn Quận--</option>
-                                                            <option value="">Quận 1</option>
-                                                            <option value="">Quận 2</option>
-                                                            <option value="">Quận 3</option>
-                                                        </select>
+                                                        <form:select class="form-control" path="district">
+                                                            <form:option value="">--Chọn Quận--</form:option>
+                                                            <form:option value="Quan_1">Quận 1</form:option>
+                                                            <form:option value="Quan_2">Quận 2</form:option>
+                                                            <form:option value="Quan_3">Quận 3</form:option>
+                                                        </form:select>
                                                     </div>
                                                     <div class="col-xs-5">
                                                         <label class="name">Phường</label>
-                                                        <input type="text" class="form-control">
+<%--                                                        <input type="text" class="form-control" name="ward" value="">--%>
+                                                        <form:input type="text" class="form-control" path="ward"></form:input>
                                                     </div>
                                                     <div class="col-xs-5">
                                                         <label class="name">Đường</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="street" value="">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-xs-12">
                                                     <div class="col-xs-4">
                                                         <label class="name">Số tầng hầm</label>
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control" name="numberOfBasement" value="">
                                                     </div>
                                                     <div class="col-xs-4">
                                                         <label class="name">Hướng</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="direction" value="">
                                                     </div>
                                                     <div class="col-xs-4">
                                                         <label class="name">Hạng</label>
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control" name="level" value="">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-xs-12">
                                                     <div class="col-xs-3">
                                                         <label class="name">Diện tích từ</label>
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control" name="areaFrom" value="">
                                                     </div>
                                                     <div class="col-xs-3">
                                                         <label class="name">Diện tích đến</label>
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control" name="areaTo" value="">
                                                     </div>
                                                     <div class="col-xs-3">
                                                         <label class="name">Giá thuê từ</label>
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control" name="rentPriceFrom" value="">
                                                     </div>
                                                     <div class="col-xs-3">
                                                         <label class="name">Giá thuê đến</label>
-                                                        <input type="number" class="form-control">
+                                                        <input type="number" class="form-control" name="rentPriceTo" value="">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-xs-12">
                                                     <div class="col-xs-5">
                                                         <label class="name">Tên quản lý</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="managerName" value="">
                                                     </div>
                                                     <div class="col-xs-5">
                                                         <label class="name">Điện thoại quản lý</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="managerPhone" value="">
                                                     </div>
                                                     <div class="col-xs-2">
                                                         <label class="name">Chọn nhân viên phụ trách</label>
                                                         <select class="form-control">
                                                             <option value="">--Chọn nhân viên--</option>
-                                                            <option value="">Nhân viên 1</option>
-                                                            <option value="">Nhân viên 2</option>
-                                                            <option value="">Nhân viên 3</option>
+                                                            <option value="1">Nhân viên 1</option>
+                                                            <option value="2">Nhân viên 2</option>
+                                                            <option value="3">Nhân viên 3</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -136,13 +139,13 @@
                                                 <div class="col-xs-12">
                                                     <div class="col-xs-6">
                                                         <label class="checkbox-inline">
-                                                            <input type="checkbox">Nội thất
+                                                            <input name="typeCode" type="checkbox" value="noi-that">Nội thất
                                                         </label>
                                                         <label class="checkbox-inline">
-                                                            <input type="checkbox">Nguyên căn
+                                                            <input name="typeCode" type="checkbox" value="nguyen-can">Nguyên căn
                                                         </label>
                                                         <label class="checkbox-inline">
-                                                            <input type="checkbox">Tầng trệt
+                                                            <input name="typeCode" type="checkbox" value="tang-tret">Tầng trệt
                                                         </label>
                                                     </div>
                                                 </div>
@@ -157,8 +160,9 @@
                                                         </button>
                                                     </div>
                                                 </div>
-<%--                                            </div>--%>
-                                        </div>
+                                                    <%--                                            </div>--%>
+                                            </div>
+                                        </form:form>
                                     </div>
                                 </div>
 
@@ -191,107 +195,68 @@
                         <div class="col-xs-12">
                             <table style="margin: 3em 0 1.5em;" id="simple-table" class="table table-striped table-bordered table-hover">
                                 <thead>
-                                <tr>
-                                    <th class="center">
-                                        <label class="pos-rel">
-                                            <input type="checkbox" class="ace">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </th>
-                                    <th>Tên toà nhà</th>
-                                    <th>Địa chỉ</th>
-                                    <th>Số tầng hầm</th>
-                                    <th>Tên quản lý</th>
-                                    <th>SĐT quản lý</th>
-                                    <th>D.T sàn</th>
-                                    <th>D.T trống</th>
-                                    <th>D.T thuê </th>
-                                    <th>Phí mô giới</th>
-                                    <th>Giá thuê</th>
-                                    <th>Phí dịch vụ</th>
-                                    <th>Thao tác</th>
-                                </tr>
+                                    <tr>
+                                        <th class="center">
+                                            <label class="pos-rel">
+                                                <input type="checkbox" class="ace">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </th>
+                                        <th>Tên toà nhà</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Số tầng hầm</th>
+                                        <th>Tên quản lý</th>
+                                        <th>SĐT quản lý</th>
+                                        <th>D.T sàn</th>
+                                        <th>D.T trống</th>
+                                        <th>D.T thuê </th>
+                                        <th>Phí mô giới</th>
+                                        <th>Giá thuê</th>
+                                        <th>Phí dịch vụ</th>
+                                        <th>Thao tác</th>
+                                    </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td class="center">
-                                        <label class="pos-rel">
-                                            <input type="checkbox" class="ace">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </td>
+                                    <c:forEach var="item" items="${buildingList}">
+                                        <tr>
+                                            <td class="center">
+                                                <label class="pos-rel">
+                                                    <input type="checkbox" class="ace">
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </td>
 
-                                    <td>
-                                        ACM Building
-                                    </td>
-                                    <td>59 Phan Xích Long, Phường 2, Quận 1</td>
-                                    <td>3</td>
-                                    <td>Anh Nam, Chị Linh</td>
-                                    <td>Feb 12</td>
-                                    <td>Feb 12</td>
-                                    <td>Feb 12</td>
-                                    <td>Feb 12</td>
-                                    <td>Feb 12</td>
-                                    <td>Feb 12</td>
-                                    <td>Expiring</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.name}</td>
 
-                                    <td>
-                                        <div class="hidden-sm hidden-xs btn-group">
-                                            <button class="btn btn-xs btn-success" title="Giao toà nhà" onclick="assingmentBuilding(1)">
-                                                <i class="ace-icon glyphicon glyphicon-list"></i>
-                                            </button>
+                                            <td>
+                                                <div class="hidden-sm hidden-xs btn-group">
+                                                    <button class="btn btn-xs btn-success" title="Giao toà nhà" onclick="assingmentBuilding(1)">
+                                                        <i class="ace-icon glyphicon glyphicon-list"></i>
+                                                    </button>
 
-                                            <a class="btn btn-xs btn-info" title="Sửa toà nhà" href="/admin/building-edit">
-                                                <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                            </a>
+                                                    <a class="btn btn-xs btn-info" title="Sửa toà nhà" href="/admin/building-edit-${item.id}">
+                                                        <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                                    </a>
 
-                                            <button class="btn btn-xs btn-danger" title="Xoá toà nhà">
-                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                            </button>
-                                        </div>
+                                                    <button class="btn btn-xs btn-danger" title="Xoá toà nhà">
+                                                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                    </button>
+                                                </div>
 
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="center">
-                                        <label class="pos-rel">
-                                            <input type="checkbox" class="ace">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </td>
-
-                                    <td>
-                                        Nam Giao Building
-                                    </td>
-                                    <td>59 Phan Xích Long, Phường 2, Quận 1</td>
-                                    <td>3</td>
-                                    <td>Anh Nam, Chị Linh</td>
-                                    <td>Feb 12</td>
-                                    <td>Feb 12</td>
-                                    <td>Feb 12</td>
-                                    <td>Feb 12</td>
-                                    <td>Feb 12</td>
-                                    <td>Feb 12</td>
-                                    <td>Expiring</td>
-
-                                    <td>
-                                        <div class="hidden-sm hidden-xs btn-group">
-                                            <button class="btn btn-xs btn-success" title="Giao toà nhà">
-                                                <i class="ace-icon glyphicon glyphicon-list"></i>
-                                            </button>
-
-                                            <button class="btn btn-xs btn-info" title="Sửa toà nhà">
-                                                <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                            </button>
-
-                                            <button class="btn btn-xs btn-danger" title="Xoá toà nhà">
-                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                 </tbody>
                             </table>
                         </div><!-- /.span -->
@@ -361,6 +326,11 @@
             }).get();
             data['staffs'] = staffs;
             console.log("ok");
+        });
+
+        $('#btnSearchBuilding').click(function(e) {
+            e.preventDefault();
+            $('#listForm').submit();
         });
     </script>
 </body>
