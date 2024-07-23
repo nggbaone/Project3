@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
+<c:url var="buildingAPI" value="/api/building"></c:url>
 <html>
 <head>
     <title>Thêm toà nhà</title>
@@ -36,7 +37,7 @@
                     </div><!-- /.page-header -->
 
                     <div class="row" style="font-family: 'Times New Roman', Times, serif">
-                        <form:form modelAttribute="buildingEdit">
+                        <form:form modelAttribute="buildingEdit" id="listForm" method="GET">
                             <div class="col-xs-12">
                                 <form class="form-horizontal" role="form" id="form-edit">
                                     <div class="form-group">
@@ -194,13 +195,13 @@
                                         <label class="col-xs-3">Loại toà nhà</label>
                                         <div class="col-xs-9">
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" name="renttype" value="noi-that">Nội thất
+                                                <input type="checkbox" name="typeCode" value="noi-that">Nội thất
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" name="renttype" value="nguyen-can">Nguyên căn
+                                                <input type="checkbox" name="typeCode" value="nguyen-can">Nguyên căn
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" name="renttype" value="tang-tret">Tầng trệt
+                                                <input type="checkbox" name="typeCode" value="tang-tret">Tầng trệt
                                             </label>
                                         </div>
                                     </div>
@@ -214,15 +215,16 @@
                                         <label class="col-xs-3"></label>
                                         <div class="col-xs-9">
                                             <c:if test="${not empty buildingEdit.id}">
-                                                <button type="button" class="btn btn-primary" id="btnAddBuilding">Cập nhật toà nhà</button>
+                                                <button type="button" class="btn btn-primary" id="btnAddOrBuilding">Cập nhật toà nhà</button>
                                                 <button type="button" class="btn btn-primary">Huỷ thao tác</button>
                                             </c:if>
                                             <c:if test="${empty buildingEdit.id}">
-                                                <button type="button" class="btn btn-primary" id="btnAddBuilding">Thêm toà nhà</button>
+                                                <button type="button" class="btn btn-primary" id="btnAddOrBuilding">Thêm toà nhà</button>
                                                 <button type="button" class="btn btn-primary">Huỷ thao tác</button>
                                             </c:if>
                                         </div>
                                     </div>
+                                    <form:hidden path="id"/>
                                 </form>
                             </div>
                         </form:form>
@@ -240,26 +242,34 @@
 
     <script>
         // dung js - jquery lay data
-        $('#btnAddBuilding').click(function(){
+        $('#btnAddOrBuilding').click(function(){
             var data = {};
             var typeCode = [];
-            var formData = $('#form-edit').serializeArray();
+            var formData = $('#listForm').serializeArray();
             $.each(formData, function(i, v){
-                if(v.name != 'renttype'){
+                if(v.name != 'typeCode'){
                     data["" +v.name +""] = v.value;
                 } else {
                     typeCode.push(v.value);
                 }
             });
             data['typeCode'] = typeCode;
-            console.log("ok");
+            // kiem tra du lieu thoa man chua
+            if (typeCode != '') {
+                addOrUpdateBuilding(data);
+            } else {
+                window.location.href = "<c:url value="/admin/building-edit?typeCode=require"/>";
+            }
+        });
+
+        function addOrUpdateBuilding(data) {
             // call api bang jquery ajax
             $.ajax({
                 type: "POST",
-                url:"http://127.0.0.1:5500/building", // call API
+                url:"${buildingAPI}", // call API
                 data: JSON.stringify(data), // định dạng dữ liệu từ client gửi xuống
                 contentType: "application/json", // định dạng dữ liệu từ client gửi xuống
-                //dataType: "JSON", // định dạng dữ liệu từ server gửi lên
+                dataType: "JSON", // định dạng dữ liệu từ server gửi lên
                 success: function(respond) {
                     console.log("Success");
                 },
@@ -267,7 +277,7 @@
                     console.log("Fail");
                 }
             });
-        });
+        }
     </script>
 
 </body>

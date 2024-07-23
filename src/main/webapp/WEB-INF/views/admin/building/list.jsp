@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="buildingListURL" value="/admin/building-list"></c:url>
+<c:url var="buildingAPI" value="/api/building"></c:url>
 <html>
 <head>
     <title>Danh sách toà nhà</title>
@@ -66,9 +67,7 @@
                                                         <label class="name">Quận</label>
                                                         <form:select class="form-control" path="district">
                                                             <form:option value="">--Chọn Quận--</form:option>
-                                                            <form:option value="Quan_1">Quận 1</form:option>
-                                                            <form:option value="Quan_2">Quận 2</form:option>
-                                                            <form:option value="Quan_3">Quận 3</form:option>
+                                                            <form:options items="${districs}"></form:options>
                                                         </form:select>
                                                     </div>
                                                     <div class="col-xs-5">
@@ -127,26 +126,16 @@
                                                     </div>
                                                     <div class="col-xs-2">
                                                         <label class="name">Chọn nhân viên phụ trách</label>
-                                                        <select class="form-control">
-                                                            <option value="">--Chọn nhân viên--</option>
-                                                            <option value="1">Nhân viên 1</option>
-                                                            <option value="2">Nhân viên 2</option>
-                                                            <option value="3">Nhân viên 3</option>
-                                                        </select>
+                                                        <form:select class="form-control" path="staffId">
+                                                            <form:option value="">--Chọn nhân viên--</form:option>
+                                                            <form:options items="${listStaffs}"/>
+                                                        </form:select>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-xs-12">
                                                     <div class="col-xs-6">
-                                                        <label class="checkbox-inline">
-                                                            <input name="typeCode" type="checkbox" value="noi-that">Nội thất
-                                                        </label>
-                                                        <label class="checkbox-inline">
-                                                            <input name="typeCode" type="checkbox" value="nguyen-can">Nguyên căn
-                                                        </label>
-                                                        <label class="checkbox-inline">
-                                                            <input name="typeCode" type="checkbox" value="tang-tret">Tầng trệt
-                                                        </label>
+                                                        <form:checkboxes path="typeCode" items="${typeCodes}"/>
                                                     </div>
                                                 </div>
 
@@ -177,7 +166,7 @@
                                         </button>
                                     </a>
 
-                                    <button class="btn btn-danger" title="Xoá toà nhà">
+                                    <button class="btn btn-danger" title="Xoá toà nhà" id="btnDeleteBuilding">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building-dash" viewBox="0 0 16 16">
                                             <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"/>
                                             <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
@@ -193,7 +182,7 @@
 
                     <div class="row">
                         <div class="col-xs-12">
-                            <table style="margin: 3em 0 1.5em;" id="simple-table" class="table table-striped table-bordered table-hover">
+                            <table id="tableList" style="margin: 3em 0 1.5em;" class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th class="center">
@@ -222,13 +211,13 @@
                                         <tr>
                                             <td class="center">
                                                 <label class="pos-rel">
-                                                    <input type="checkbox" class="ace">
+                                                    <input type="checkbox" class="ace" name="checkList" value="${item.id}">
                                                     <span class="lbl"></span>
                                                 </label>
                                             </td>
 
                                             <td>${item.name}</td>
-                                            <td>${item.name}</td>
+                                            <td>${item.id}</td>
                                             <td>${item.name}</td>
                                             <td>${item.name}</td>
                                             <td>${item.name}</td>
@@ -241,7 +230,7 @@
 
                                             <td>
                                                 <div class="hidden-sm hidden-xs btn-group">
-                                                    <button class="btn btn-xs btn-success" title="Giao toà nhà" onclick="assingmentBuilding(1)">
+                                                    <button class="btn btn-xs btn-success" title="Giao toà nhà" onclick="assingmentBuilding(${item.id})">
                                                         <i class="ace-icon glyphicon glyphicon-list"></i>
                                                     </button>
 
@@ -249,11 +238,10 @@
                                                         <i class="ace-icon fa fa-pencil bigger-120"></i>
                                                     </a>
 
-                                                    <button class="btn btn-xs btn-danger" title="Xoá toà nhà">
+                                                    <button class="btn btn-xs btn-danger" title="Xoá toà nhà" onclick="deleteBuilding(${item.id})">
                                                         <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                                     </button>
                                                 </div>
-
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -315,6 +303,7 @@
     <script>
         function assingmentBuilding(buildingId) {
             $('#assingmentBuildingModal').modal();
+            $('#buildingId').val();
         }
 
         $('#btnassingmentBuilding').click(function(e){
@@ -325,13 +314,41 @@
                 return $(this).val();
             }).get();
             data['staffs'] = staffs;
-            console.log("ok");
         });
 
         $('#btnSearchBuilding').click(function(e) {
             e.preventDefault();
             $('#listForm').submit();
         });
+
+        function deleteBuilding(id) {
+            var buildingId = [id];
+            deleteBuildings(buildingId);
+        }
+
+        $('#btnDeleteBuilding').click(function(e){
+            e.preventDefault();
+            var buildingIds = $('#tableList').find('tbody input[type = checkbox]:checked').map(function(){
+                return $(this).val();
+            }).get();
+            deleteBuilding(buildingIds);
+        });
+
+        function deleteBuildings(data) {
+            $.ajax({
+                type: "Delete",
+                url:"${buildingAPI}/" + data, // call API
+                data: JSON.stringify(data), // định dạng dữ liệu từ client gửi xuống
+                contentType: "application/json", // định dạng dữ liệu từ client gửi xuống
+                dataType: "JSON", // định dạng dữ liệu từ server gửi lên
+                success: function(respond) {
+                    console.log("Success");
+                },
+                error: function(respond) {
+                    console.log("Fail");
+                }
+            });
+        }
     </script>
 </body>
 </html>

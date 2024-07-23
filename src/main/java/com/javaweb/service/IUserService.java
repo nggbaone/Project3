@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IUserService {
+
     UserDTO findOneByUserNameAndStatus(String name, int status);
     List<UserDTO> getUsers(String searchValue, Pageable pageable);
     int getTotalItems(String searchValue);
@@ -25,4 +26,6 @@ public interface IUserService {
 //    ResponseDTO listStaff(Long buildingId);
     List<UserDTO> getAllUsers(Pageable pageable);
     int countTotalItems();
+
+    Map<Long, String> getStaffs();
 }
