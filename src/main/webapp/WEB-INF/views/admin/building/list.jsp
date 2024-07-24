@@ -303,7 +303,25 @@
     <script>
         function assingmentBuilding(buildingId) {
             $('#assingmentBuildingModal').modal();
+            loadStaff(buildingId);
             $('#buildingId').val();
+        }
+
+        function loadStaff(buildingId) {
+            $.ajax({
+                type: "GET",
+                url:"${buildingAPI}/" + buildingId + '/staffs', // call API
+                data: JSON.stringify(data), // định dạng dữ liệu từ client gửi xuống
+                contentType: "application/json", // định dạng dữ liệu từ client gửi xuống
+                dataType: "JSON", // định dạng dữ liệu từ server gửi lên
+                success: function(response) {
+                    console.log("Success");
+                },
+                error: function(response) {
+                    console.log("Fail");
+                    console.log(response);
+                }
+            });
         }
 
         $('#btnassingmentBuilding').click(function(e){
